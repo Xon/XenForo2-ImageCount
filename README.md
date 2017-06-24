@@ -1,4 +1,4 @@
-# XenForo-ImageCount
+# XenForo2-ImageCount
 
 Provides user-group based message count limits.
 
