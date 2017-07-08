@@ -1,0 +1,14 @@
+{
+    "permission.conversation_sv_MaxImageCount.txt": {
+        "global_cache": false,
+        "version_id": 2000070,
+        "version_string": "2.0.0",
+        "hash": "7796704a01766292fac8a6f02fff3b0e"
+    },
+    "permission.forum_sv_MaxImageCount.txt": {
+        "global_cache": false,
+        "version_id": 2000070,
+        "version_string": "2.0.0",
+        "hash": "7796704a01766292fac8a6f02fff3b0e"
+    }
+}
