@@ -1,0 +1,11 @@
+{
+    "XF-Entity-User_SV-ImageCount-XF-Entity-User.json": {
+        "hash": "d8950c69a0b39b33d7ad1e42ee1d4041"
+    },
+    "XF-Service-Conversation-MessageManager_SV-ImageCount-XF-Service-Conversation-MessageManager.json": {
+        "hash": "f87a0ac0abdb9cd3f88bf85f3f8d248d"
+    },
+    "XF-Service-Post-Preparer_SV-ImageCount-XF-Service-Post-Preparer.json": {
+        "hash": "83668634f2b83a2fd240ce5aff855ffe"
+    }
+}
