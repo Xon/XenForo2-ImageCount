@@ -40,16 +40,4 @@ class User extends XFCP_User
 
         return $permVal;
     }
-
-    /**
-     * @param Structure $structure
-     * @return Structure
-     */
-    public static function getStructure(Structure $structure)
-    {
-        $structure = parent::getStructure($structure);
-        $structure->getters['message_max_images'] = true;
-
-        return $structure;
-    }
 }
