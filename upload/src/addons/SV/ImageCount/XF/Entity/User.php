@@ -7,37 +7,43 @@ use XF\Mvc\Entity\Structure;
 
 class User extends XFCP_User
 {
+    /**
+     * @return bool|int
+     */
     public function getForumMessageMaxImages(Forum $forum)
     {
         $permVal = $this->hasNodePermission($forum->node_id, 'sv_MaxImageCount');
 
-        if ($permVal == -1)
+        if ($permVal)
         {
-            return PHP_INT_MAX;
+            if ($permVal < 0)
+            {
+                $permVal = 0;
+            }
+
+            return $permVal;
         }
 
-        if (!$permVal)
-        {
-            return $this->app()->options()->messageMaxImages;
-        }
-
-        return $permVal;
+        return false;
     }
 
+    /**
+     * @return bool|int
+     */
     public function getConversationMessageMaxImages()
     {
         $permVal = $this->hasPermission('conversation', 'sv_MaxImageCount');
 
-        if ($permVal == -1)
+        if ($permVal)
         {
-            return PHP_INT_MAX;
+            if ($permVal < 0)
+            {
+                $permVal = 0;
+            }
+
+            return $permVal;
         }
 
-        if (!$permVal)
-        {
-            return $this->app()->options()->messageMaxImages;
-        }
-
-        return $permVal;
+        return false;
     }
 }

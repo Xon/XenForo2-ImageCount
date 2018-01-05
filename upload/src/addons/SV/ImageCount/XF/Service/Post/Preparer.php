@@ -11,7 +11,11 @@ class Preparer extends XFCP_Preparer
         $post = $this->getPost();
         /** @var \SV\ImageCount\XF\Entity\User $user */
         $user = $post->User;
-        $messagePreparer->setConstraint('maxImages', $user->getForumMessageMaxImages($post->Thread->Forum));
+        $maxValue = $user->getForumMessageMaxImages($post->Thread->Forum);
+        if ($maxValue !== false)
+        {
+            $messagePreparer->setConstraint('maxImages', $maxValue);
+        }
 
         return $messagePreparer;
     }

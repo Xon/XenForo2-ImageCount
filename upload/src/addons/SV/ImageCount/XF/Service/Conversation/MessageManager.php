@@ -10,7 +10,11 @@ class MessageManager extends XFCP_MessageManager
 
         /** @var \SV\ImageCount\XF\Entity\User $user */
         $user = $this->conversationMessage->User;
-        $messagePreparer->setConstraint('maxImages', $user->getConversationMessageMaxImages());
+        $maxValue = $user->getConversationMessageMaxImages();
+        if ($maxValue !== false)
+        {
+            $messagePreparer->setConstraint('maxImages', $maxValue);
+        }
 
         return $messagePreparer;
     }
