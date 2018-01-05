@@ -7,4 +7,4 @@ If the limit is set to 0, the global limit is used.
 
 Supports:
 - Threads
-- Conversations (Requires XenForo 1.5.8+)
+- Conversations
