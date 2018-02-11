@@ -1,6 +1,6 @@
 {
     "from_class": "XF\\Service\\Conversation\\MessageManager",
     "to_class": "SV\\ImageCount\\XF\\Service\\Conversation\\MessageManager",
-    "execute_order": 10,
+    "execute_order": 5983,
     "active": true
 }
