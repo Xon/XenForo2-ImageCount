@@ -10,7 +10,7 @@ class Preparer extends XFCP_Preparer
 
         $post = $this->getPost();
         /** @var \SV\ImageCount\XF\Entity\User $user */
-        $user = $post->User;
+        $user = \XF::visitor();
         $maxValue = $user->getForumMessageMaxImages($post->Thread->Forum);
         if ($maxValue !== false)
         {

@@ -9,7 +9,7 @@ class MessageManager extends XFCP_MessageManager
         $messagePreparer = parent::getMessagePreparer($format);
 
         /** @var \SV\ImageCount\XF\Entity\User $user */
-        $user = $this->conversationMessage->User;
+        $user = \XF::visitor();
         $maxValue = $user->getConversationMessageMaxImages();
         if ($maxValue !== false)
         {
