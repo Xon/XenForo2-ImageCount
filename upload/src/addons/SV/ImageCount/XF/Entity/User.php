@@ -3,11 +3,11 @@
 namespace SV\ImageCount\XF\Entity;
 
 use XF\Entity\Forum;
-use XF\Mvc\Entity\Structure;
 
 class User extends XFCP_User
 {
     /**
+     * @param Forum $forum
      * @return bool|int
      */
     public function getForumMessageMaxImages(Forum $forum)

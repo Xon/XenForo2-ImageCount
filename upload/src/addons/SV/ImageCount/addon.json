@@ -1,7 +1,7 @@
 {
     "legacy_addon_id": "SV_ImageCount",
     "title": "Image Count Limit",
-    "description": "",
+    "description": "Provides user-group based count limits for posts",
     "version_id": 2000300,
     "version_string": "2.0.3",
     "dev" : "Xon",
