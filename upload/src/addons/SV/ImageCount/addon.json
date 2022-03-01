@@ -10,7 +10,7 @@
     "support_url": "https://xenforo.com/community/resources/image-count-limit-by-user-group.5983/",
     "extra_urls": [],
     "require": {
-        "XF": [2010070, "XenForo 2.1.0+"],
+        "XF": [2020070, "XenForo 2.2.0+"],
         "php": ["7.0.0", "PHP 7.0.0+"]
     },
     "icon": "icon.png"
