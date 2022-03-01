@@ -1,6 +1,11 @@
 <?php
+/**
+ * @noinspection PhpMissingReturnTypeInspection
+ */
 
 namespace SV\ImageCount\XF\Service\Post;
+
+use SV\ImageCount\XF\Entity\User;
 
 class Preparer extends XFCP_Preparer
 {
@@ -9,19 +14,15 @@ class Preparer extends XFCP_Preparer
         $messagePreparer = parent::getMessagePreparer($format);
 
         $post = $this->getPost();
-        $thread = $post->Thread;
-        if ($thread)
+        $forum = $post->Thread->Forum ?? null;
+        if ($forum !== null)
         {
-            $forum = $thread->Forum;
-            if ($forum)
+            /** @var User $user */
+            $user = \XF::visitor();
+            $maxValue = $user->getForumMessageMaxImages($forum);
+            if ($maxValue !== null)
             {
-                /** @var \SV\ImageCount\XF\Entity\User $user */
-                $user = \XF::visitor();
-                $maxValue = $user->getForumMessageMaxImages($forum);
-                if ($maxValue !== false)
-                {
-                    $messagePreparer->setConstraint('maxImages', $maxValue);
-                }
+                $messagePreparer->setConstraint('maxImages', $maxValue);
             }
         }
 

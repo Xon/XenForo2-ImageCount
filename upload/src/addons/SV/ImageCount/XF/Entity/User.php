@@ -8,42 +8,46 @@ class User extends XFCP_User
 {
     /**
      * @param Forum $forum
-     * @return bool|int
+     * @return int|null
      */
     public function getForumMessageMaxImages(Forum $forum)
     {
-        $permVal = $this->hasNodePermission($forum->node_id, 'sv_MaxImageCount');
+        $permVal = (int)$this->hasNodePermission($forum->node_id, 'sv_MaxImageCount');
 
-        if ($permVal)
+        if ($permVal < 0)
         {
-            if ($permVal < 0)
-            {
-                $permVal = 0;
-            }
-
-            return $permVal;
+            // unlimited
+            return 0;
         }
 
-        return false;
+        if ($permVal === 0)
+        {
+            // do not apply
+            return null;
+        }
+
+        return $permVal;
     }
 
     /**
-     * @return bool|int
+     * @return int|null
      */
     public function getConversationMessageMaxImages()
     {
-        $permVal = $this->hasPermission('conversation', 'sv_MaxImageCount');
+        $permVal = (int)$this->hasPermission('conversation', 'sv_MaxImageCount');
 
-        if ($permVal)
+        if ($permVal < 0)
         {
-            if ($permVal < 0)
-            {
-                $permVal = 0;
-            }
-
-            return $permVal;
+            // unlimited
+            return 0;
         }
 
-        return false;
+        if ($permVal === 0)
+        {
+            // do not apply
+            return null;
+        }
+
+        return $permVal;
     }
 }

@@ -1,6 +1,11 @@
 <?php
+/**
+ * @noinspection PhpMissingReturnTypeInspection
+ */
 
 namespace SV\ImageCount\XF\Service\Conversation;
+
+use SV\ImageCount\XF\Entity\User;
 
 class MessageManager extends XFCP_MessageManager
 {
@@ -8,10 +13,10 @@ class MessageManager extends XFCP_MessageManager
     {
         $messagePreparer = parent::getMessagePreparer($format);
 
-        /** @var \SV\ImageCount\XF\Entity\User $user */
+        /** @var User $user */
         $user = \XF::visitor();
         $maxValue = $user->getConversationMessageMaxImages();
-        if ($maxValue !== false)
+        if ($maxValue !== null)
         {
             $messagePreparer->setConstraint('maxImages', $maxValue);
         }
