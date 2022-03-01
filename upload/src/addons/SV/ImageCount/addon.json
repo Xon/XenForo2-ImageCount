@@ -13,5 +13,5 @@
         "XF": [2020070, "XenForo 2.2.0+"],
         "php": ["7.0.0", "PHP 7.0.0+"]
     },
-    "icon": "icon.png"
+    "icon": "far fa-image-polaroid"
 }
