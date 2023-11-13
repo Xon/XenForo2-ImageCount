@@ -8,3 +8,7 @@ If the limit is set to 0, the global limit is used.
 Supports:
 - Threads
 - Conversations
+
+Permissions
+- Max Images (under Forums)
+- Max Images (under Conversations)
