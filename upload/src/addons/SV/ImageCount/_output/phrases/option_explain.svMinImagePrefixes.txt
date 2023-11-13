@@ -1,0 +1,1 @@
+If set, only threads with these prefixes have the minimum image count permissions applied
