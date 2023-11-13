@@ -11,7 +11,7 @@ Supports:
 
 Forum Permissions
 - Minimum images for first post
-- Minimum images for all posts
+- Minimum images for reply posts
 - Maximum images
 
 Conversations Permissions

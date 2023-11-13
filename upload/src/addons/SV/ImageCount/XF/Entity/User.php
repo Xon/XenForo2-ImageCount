@@ -30,7 +30,7 @@ class User extends XFCP_User
     {
         $isFirstPost = $post !== null && $post->isFirstPost();
 
-        $permVal = (int)$this->hasNodePermission($forum->node_id, $isFirstPost ? 'svMinImageCountFirstPost' : 'svMinImageCountAll');
+        $permVal = (int)$this->hasNodePermission($forum->node_id, $isFirstPost ? 'svMinImageCountFirstPost' : 'svMinImageCountReplies');
         if ($permVal <= 0)
         {
             // do not apply
