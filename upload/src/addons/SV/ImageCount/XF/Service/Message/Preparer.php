@@ -11,6 +11,8 @@ use XF\Phrase;
  */
 class Preparer extends XFCP_Preparer
 {
+    public $svAttachCount = 0;
+
     protected $svImageTags = [
         'img',
         'attach',
@@ -38,6 +40,33 @@ class Preparer extends XFCP_Preparer
         return $isValid;
     }
 
+    public function svSetupAttachmentCount(string $contentType, ?int $contentId, ?string $tempAttachmentHash): void
+    {
+        $count = 0;
+        if ($contentId !== null)
+        {
+            $count += (int)\XF::db()->fetchOne('
+                SELECT COUNT(*)
+                FROM xf_attachment AS attach
+                JOIN xf_attachment_data AS attachData ON attach.data_id = attachData.data_id
+                WHERE attach.content_type = ? AND attach.content_id = ? AND attachData.width > 0
+            ', [$contentType, $contentId]);
+        }
+
+        $tempAttachmentHash = (string)$tempAttachmentHash;
+        if ($tempAttachmentHash !== '')
+        {
+            $count += (int)\XF::db()->fetchOne('
+                SELECT COUNT(*)
+                FROM xf_attachment as attach
+                JOIN xf_attachment_data as attachData on attach.data_id = attachData.data_id
+                WHERE attach.temp_hash = ? AND attachData.width > 0
+            ', [$tempAttachmentHash]);
+        }
+
+        $this->svAttachCount = $count;
+    }
+
     public function checkMinImages(): ?\XF\Phrase
     {
         $error = null;
@@ -47,17 +76,13 @@ class Preparer extends XFCP_Preparer
         $minImages = (int)($this->constraints['minImages'] ?? 0);
         if ($minImages > 0)
         {
-            $hasValidTag = false;
+            $imageCount = $this->svAttachCount;
             foreach ($this->svImageTags as $tag)
             {
-                if ($usage->getTagCount($tag) >= $minImages)
-                {
-                    $hasValidTag = true;
-                    break;
-                }
+                $imageCount += (int)$usage->getTagCount($tag);
             }
 
-            if (!$hasValidTag)
+            if ($imageCount < $minImages)
             {
                 $error = \XF::phraseDeferred(
                     $minImages === 1

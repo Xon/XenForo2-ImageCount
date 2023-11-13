@@ -12,8 +12,14 @@ class Preparer extends XFCP_Preparer
     /** @var \SV\ImageCount\XF\Service\Message\Preparer|null  */
     public $svMessagePreparer = null;
 
+    public function getAttachmentHash(): ?string
+    {
+        return $this->attachmentHash;
+    }
+
     protected function getMessagePreparer($format = true)
     {
+        /** @var \SV\ImageCount\XF\Service\Message\Preparer $messagePreparer */
         $messagePreparer = parent::getMessagePreparer($format);
 
         $post = $this->getPost();
@@ -31,6 +37,10 @@ class Preparer extends XFCP_Preparer
             $minValue = $user->getForumMessageMinImages($forum, $post);
             if ($minValue !== null)
             {
+                if (\XF::options()->svMinImageAttachCount ?? false)
+                {
+                    $messagePreparer->svSetupAttachmentCount('post', $this->post->post_id, $this->attachmentHash);
+                }
                 $messagePreparer->setConstraint('minImages', $minValue);
             }
 

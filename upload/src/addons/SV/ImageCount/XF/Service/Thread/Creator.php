@@ -21,6 +21,10 @@ class Creator extends XFCP_Creator
                 $minValue = $user->getForumMessageMinImages($this->post->Thread->Forum, $this->post);
                 if ($minValue !== null)
                 {
+                    if (\XF::options()->svMinImageAttachCount ?? false)
+                    {
+                        $msgPreparer->svSetupAttachmentCount('post', $this->post->post_id, $this->postPreparer->getAttachmentHash());
+                    }
                     $msgPreparer->setConstraint('minImages', $minValue);
                     $error = $msgPreparer->checkMinImages();
                     if ($error !== null)
