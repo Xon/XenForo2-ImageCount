@@ -6,11 +6,7 @@ use XF\Entity\Forum;
 
 class User extends XFCP_User
 {
-    /**
-     * @param Forum $forum
-     * @return int|null
-     */
-    public function getForumMessageMaxImages(Forum $forum)
+    public function getForumMessageMaxImages(Forum $forum): ?int
     {
         $permVal = (int)$this->hasNodePermission($forum->node_id, 'sv_MaxImageCount');
 
@@ -29,10 +25,7 @@ class User extends XFCP_User
         return $permVal;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getConversationMessageMaxImages()
+    public function getConversationMessageMaxImages(): ?int
     {
         $permVal = (int)$this->hasPermission('conversation', 'sv_MaxImageCount');
 
