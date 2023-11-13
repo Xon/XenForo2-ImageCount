@@ -2,16 +2,26 @@
     "legacy_addon_id": "SV_ImageCount",
     "title": "Image Count Limit",
     "description": "Provides user-group based count limits for posts",
-    "version_id": 2020100,
-    "version_string": "2.2.1",
+    "version_id": 2030000,
+    "version_string": "2.3.0",
     "dev" : "Xon",
     "dev_url": "https://atelieraphelion.com/",
     "faq_url": "",
     "support_url": "https://xenforo.com/community/resources/image-count-limit-by-user-group.5983/",
     "extra_urls": [],
     "require": {
-        "XF": [2020070, "XenForo 2.2.0+"],
-        "php": ["7.0.0", "PHP 7.0.0+"]
+        "SV/StandardLib": [
+            2001180000,
+            "Standard Library by Xon v1.18.0+"
+        ],
+        "XF": [
+            "2.2.0",
+            "XenForo 2.2.0+"
+        ],
+        "php": [
+            "7.2.0",
+            "PHP 7.2.0+"
+        ]
     },
     "icon": "far fa-image-polaroid"
 }
