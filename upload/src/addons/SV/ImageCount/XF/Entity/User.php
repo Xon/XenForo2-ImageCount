@@ -3,6 +3,7 @@
 namespace SV\ImageCount\XF\Entity;
 
 use XF\Entity\Forum;
+use XF\Entity\Post;
 
 class User extends XFCP_User
 {
@@ -17,6 +18,20 @@ class User extends XFCP_User
         }
 
         if ($permVal === 0)
+        {
+            // do not apply
+            return null;
+        }
+
+        return $permVal;
+    }
+
+    public function getForumMessageMinImages(Forum $forum, ?Post $post): ?int
+    {
+        $isFirstPost = $post !== null && $post->isFirstPost();
+
+        $permVal = (int)$this->hasNodePermission($forum->node_id, $isFirstPost ? 'svMinImageCountFirstPost' : 'svMinImageCountAll');
+        if ($permVal <= 0)
         {
             // do not apply
             return null;

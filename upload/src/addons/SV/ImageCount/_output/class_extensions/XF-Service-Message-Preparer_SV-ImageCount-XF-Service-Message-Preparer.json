@@ -1,0 +1,6 @@
+{
+    "from_class": "XF\\Service\\Message\\Preparer",
+    "to_class": "SV\\ImageCount\\XF\\Service\\Message\\Preparer",
+    "execute_order": 5983,
+    "active": true
+}

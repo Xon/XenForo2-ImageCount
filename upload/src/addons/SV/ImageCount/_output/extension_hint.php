@@ -14,6 +14,11 @@ namespace SV\ImageCount\XF\Service\Conversation
 	class XFCP_MessageManager extends \XF\Service\Conversation\MessageManager {}
 }
 
+namespace SV\ImageCount\XF\Service\Message
+{
+	class XFCP_Preparer extends \XF\Service\Message\Preparer {}
+}
+
 namespace SV\ImageCount\XF\Service\Post
 {
 	class XFCP_Preparer extends \XF\Service\Post\Preparer {}

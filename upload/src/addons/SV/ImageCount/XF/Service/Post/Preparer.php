@@ -24,6 +24,12 @@ class Preparer extends XFCP_Preparer
             {
                 $messagePreparer->setConstraint('maxImages', $maxValue);
             }
+
+            $minValue = $user->getForumMessageMinImages($forum, $post);
+            if ($minValue !== null)
+            {
+                $messagePreparer->setConstraint('minImages', $minValue);
+            }
         }
 
         return $messagePreparer;

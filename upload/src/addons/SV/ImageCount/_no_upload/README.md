@@ -9,6 +9,10 @@ Supports:
 - Threads
 - Conversations
 
-Permissions
-- Max Images (under Forums)
-- Max Images (under Conversations)
+Forum Permissions
+- Minimum images for first post
+- Minimum images for all posts
+- Maximum images
+
+Conversations Permissions
+- Maximum images
