@@ -23,3 +23,8 @@ namespace SV\ImageCount\XF\Service\Post
 {
 	class XFCP_Preparer extends \XF\Service\Post\Preparer {}
 }
+
+namespace SV\ImageCount\XF\Service\Thread
+{
+	class XFCP_Creator extends \XF\Service\Thread\Creator {}
+}

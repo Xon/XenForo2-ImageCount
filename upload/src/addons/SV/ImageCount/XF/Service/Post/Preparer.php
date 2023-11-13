@@ -9,6 +9,9 @@ use SV\ImageCount\XF\Entity\User;
 
 class Preparer extends XFCP_Preparer
 {
+    /** @var \SV\ImageCount\XF\Service\Message\Preparer|null  */
+    public $svMessagePreparer = null;
+
     protected function getMessagePreparer($format = true)
     {
         $messagePreparer = parent::getMessagePreparer($format);
@@ -30,6 +33,8 @@ class Preparer extends XFCP_Preparer
             {
                 $messagePreparer->setConstraint('minImages', $minValue);
             }
+
+            $this->svMessagePreparer = $messagePreparer;
         }
 
         return $messagePreparer;

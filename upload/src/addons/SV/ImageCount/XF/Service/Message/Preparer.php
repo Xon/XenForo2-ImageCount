@@ -4,6 +4,8 @@ namespace SV\ImageCount\XF\Service\Message;
 
 
 
+use XF\Phrase;
+
 /**
  * @extends \XF\Service\Message\Preparer
  */
@@ -27,6 +29,18 @@ class Preparer extends XFCP_Preparer
     {
         $isValid = parent::checkValidity($message);
 
+        $error = $this->checkMinImages();
+        if ($error !== null)
+        {
+            $this->errors[] = $error;
+        }
+
+        return $isValid;
+    }
+
+    public function checkMinImages(): ?\XF\Phrase
+    {
+        $error = null;
         /** @var \XF\BbCode\ProcessorAction\AnalyzeUsage $usage */
         $usage = $this->bbCodeProcessor->getAnalyzer('usage');
 
@@ -45,16 +59,15 @@ class Preparer extends XFCP_Preparer
 
             if (!$hasValidTag)
             {
-                $this->errors[] = \XF::phraseDeferred(
+                $error = \XF::phraseDeferred(
                     $minImages === 1
                         ? 'sv_please_enter_message_with_at_least_1_image'
                         : 'sv_please_enter_message_with_at_least_x_images',
                     ['count' => $minImages]
                 );
-                $isValid = false;
             }
         }
 
-        return $isValid;
+        return $error;
     }
 }
