@@ -27,7 +27,7 @@ class Preparer extends XFCP_Preparer
         if ($forum !== null)
         {
             /** @var User $user */
-            $user = \XF::visitor();
+            $user = $post->User ?? \XF::visitor();
             $maxValue = $user->getForumMessageMaxImages($forum);
             if ($maxValue !== null)
             {

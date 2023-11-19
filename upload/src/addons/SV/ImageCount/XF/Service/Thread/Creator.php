@@ -2,7 +2,9 @@
 
 namespace SV\ImageCount\XF\Service\Thread;
 
-use SV\ImageCount\XF\Entity\User;/**
+use SV\ImageCount\XF\Entity\User;
+
+/**
  * @extends \XF\Service\Thread\Creator
  * @property \SV\ImageCount\XF\Service\Post\Preparer $postPreparer
  */
@@ -16,7 +18,7 @@ class Creator extends XFCP_Creator
             if ($msgPreparer !== null)
             {
                 /** @var User $user */
-                $user =  $this->post->User;
+                $user = $this->post->User ?? \XF::visitor();
 
                 $minValue = $user->getForumMessageMinImages($this->post->Thread->Forum, $this->post);
                 if ($minValue !== null)
