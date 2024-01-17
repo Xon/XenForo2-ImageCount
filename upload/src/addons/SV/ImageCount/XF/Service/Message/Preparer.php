@@ -2,9 +2,8 @@
 
 namespace SV\ImageCount\XF\Service\Message;
 
-
-
-use XF\Phrase;
+use SV\ImageCount\BbCode\ProcessorAction\AnalyzeQuotedImgUsage;
+use function max;
 
 /**
  * @extends \XF\Service\Message\Preparer
@@ -24,12 +23,44 @@ class Preparer extends XFCP_Preparer
         parent::setup();
 
         $this->setConstraint('minImages', 0);
+        $this->filters['svExtractQuotedImgStats'] = (bool)(\XF::options()->svExcludeQuotedImagesFromCount ?? false);
     }
 
     /** @noinspection PhpMissingReturnTypeInspection */
     public function checkValidity($message)
     {
-        $isValid = parent::checkValidity($message);
+        $undoPatchCount = null;
+        /** @var ?AnalyzeQuotedImgUsage $quotedUsage */
+        $quotedUsage = $this->bbCodeProcessor->getAnalyzer(AnalyzeQuotedImgUsage::class);
+        if ($quotedUsage !== null && $quotedUsage->imagesInQuotes !== 0)
+        {
+            /** @var ?\XF\BbCode\ProcessorAction\AnalyzeUsage $usage */
+            $usage = $this->bbCodeProcessor->getAnalyzer('usage');
+            if ($usage !== null)
+            {
+                $originalImageCount = 0;
+                $patchImgCount = \Closure::bind(function () use ($quotedUsage, & $originalImageCount) {
+                    $originalImageCount = $this->tagCount['img'] ?? 0;
+                    $this->tagCount['img'] = max(0, $originalImageCount - $quotedUsage->imagesInQuotes);
+                }, $usage, $usage);
+                $undoPatchCount = \Closure::bind(function () use ($quotedUsage, $originalImageCount) {
+                    $this->tagCount['img'] = $originalImageCount;
+                }, $usage, $usage);
+
+                $patchImgCount();
+            }
+        }
+        try
+        {
+            $isValid = parent::checkValidity($message);
+        }
+        finally
+        {
+            if ($undoPatchCount !== null)
+            {
+                $undoPatchCount();
+            }
+        }
 
         $error = $this->checkMinImages();
         if ($error !== null)
@@ -38,6 +69,20 @@ class Preparer extends XFCP_Preparer
         }
 
         return $isValid;
+    }
+
+    /** @noinspection PhpMissingReturnTypeInspection */
+    protected function getBbCodeProcessor()
+    {
+        $processor = parent::getBbCodeProcessor();
+
+        if ($this->filters['svExtractQuotedImgStats'])
+        {
+            $bbCodeContainer = $this->app->bbCode();
+            $processor->addProcessorAction(AnalyzeQuotedImgUsage::class, $bbCodeContainer->processorAction(AnalyzeQuotedImgUsage::class));
+        }
+
+        return $processor;
     }
 
     public function svSetupAttachmentCount(string $contentType, ?int $contentId, ?string $tempAttachmentHash): void
@@ -80,6 +125,18 @@ class Preparer extends XFCP_Preparer
             foreach ($this->svImageTags as $tag)
             {
                 $imageCount += (int)$usage->getTagCount($tag);
+            }
+
+            /** @var AnalyzeQuotedImgUsage $quotedUsage */
+            $quotedUsage = $this->bbCodeProcessor->getAnalyzer(AnalyzeQuotedImgUsage::class);
+            if ($quotedUsage !== null)
+            {
+                if ($this->svAttachCount > 0)
+                {
+                    $imageCount -= $quotedUsage->attachmentsInQuotes;
+                }
+                $imageCount = $imageCount - $quotedUsage->imagesInQuotes;
+                $imageCount = max(0, $imageCount);
             }
 
             if ($imageCount < $minImages)
