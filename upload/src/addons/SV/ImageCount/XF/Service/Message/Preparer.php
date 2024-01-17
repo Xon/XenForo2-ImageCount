@@ -16,7 +16,7 @@ class Preparer extends XFCP_Preparer
     protected $svImageTags = [
         'img',
         'attach',
-        'bimg', // SV/AdvancedBbCodesPack
+        //'bimg', // SV/AdvancedBbCodesPack shims img count to include bimg
     ];
 
     protected function setup()
