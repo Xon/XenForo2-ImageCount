@@ -33,17 +33,17 @@ class AnalyzeQuotedImgUsage implements AnalyzerInterface, FiltererInterface
         $this->attachmentsInQuotes = 0;
     }
 
-    public function filterQuoteTag(array $tag, array $options)
+    public function filterQuoteTag(array $tag, array $options): void
     {
         $this->quoteDepth++;
     }
 
-    public function analyzeQuoteTag(array $tag, array $options)
+    public function analyzeQuoteTag(array $tag, array $options): void
     {
         $this->quoteDepth--;
     }
 
-    public function analyzeImageTag(array $tag, array $options)
+    public function analyzeImageTag(array $tag, array $options): void
     {
         if ($this->quoteDepth > 0)
         {
@@ -51,7 +51,7 @@ class AnalyzeQuotedImgUsage implements AnalyzerInterface, FiltererInterface
         }
     }
 
-    public function analyzeAttachTag(array $tag, array $options)
+    public function analyzeAttachTag(array $tag, array $options): void
     {
         if ($this->quoteDepth > 0)
         {

@@ -2,7 +2,7 @@
 
 namespace SV\ImageCount\XF\Service\Thread;
 
-use SV\ImageCount\XF\Entity\User;
+use SV\ImageCount\XF\Entity\User as ExtendedUserEntity;
 
 /**
  * @extends \XF\Service\Thread\Creator
@@ -17,7 +17,7 @@ class Creator extends XFCP_Creator
             $msgPreparer = $this->postPreparer->svMessagePreparer ?? null;
             if ($msgPreparer !== null)
             {
-                /** @var User $user */
+                /** @var ExtendedUserEntity $user */
                 $user = $this->post->User ?? \XF::visitor();
 
                 $minValue = $user->getForumMessageMinImages($this->post->Thread->Forum, $this->post);

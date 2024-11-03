@@ -2,13 +2,19 @@
 
 namespace SV\ImageCount\Option;
 
-use XF\Entity\ThreadPrefixGroup;
+use SV\StandardLib\Helper;
+use XF\Entity\Option as OptionEntity;
+use XF\Entity\ThreadPrefix as ThreadPrefixEntity;
+use XF\Entity\ThreadPrefixGroup as ThreadPrefixGroupEntity;
 use XF\Option\AbstractOption;
+use XF\Repository\ThreadPrefix as ThreadPrefixRepo;
 use function array_map;
+use function assert;
+use function is_array;
 
 abstract class ThreadPrefix extends AbstractOption
 {
-    public static function renderOption(\XF\Entity\Option $option, array $htmlParams): string
+    public static function renderOption(OptionEntity $option, array $htmlParams): string
     {
         $choices = [
             [
@@ -18,14 +24,13 @@ abstract class ThreadPrefix extends AbstractOption
             ]
         ];
 
-        /** @var \XF\Repository\ThreadPrefix $prefixRepo */
-        $prefixRepo = \XF::repository('XF:ThreadPrefix');
+        $prefixRepo = Helper::repository(ThreadPrefixRepo::class);
         $prefixListData = $prefixRepo->getPrefixListData();
 
-        /** @var ThreadPrefixGroup $prefixGroup */
+        /** @var ThreadPrefixGroupEntity $prefixGroup */
         foreach ($prefixListData['prefixGroups'] as $prefixGroup)
         {
-            /** @var \XF\Entity\ThreadPrefix[] $prefixesByGroup */
+            /** @var ThreadPrefixEntity[] $prefixesByGroup */
             $prefixesByGroup = $prefixListData['prefixesGrouped'][$prefixGroup->prefix_group_id] ?? null;
             if ($prefixesByGroup === null)
             {
@@ -57,7 +62,7 @@ abstract class ThreadPrefix extends AbstractOption
     }
 
     /** @noinspection PhpUnusedParameterInspection */
-    public static function verifyOption(&$value, \XF\Entity\Option $option): bool
+    public static function verifyOption(&$value, OptionEntity $option): bool
     {
         assert(is_array($value));
         $value = array_map('\intval', $value);

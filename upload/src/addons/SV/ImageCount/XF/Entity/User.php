@@ -2,14 +2,14 @@
 
 namespace SV\ImageCount\XF\Entity;
 
-use XF\Entity\Forum;
-use XF\Entity\Post;
-use function array_diff;
+use XF\Entity\Forum as ForumEntity;
+use XF\Entity\Post as PostEntity;
+use function array_intersect;
 use function count;
 
 class User extends XFCP_User
 {
-    public function getForumMessageMaxImages(Forum $forum): ?int
+    public function getForumMessageMaxImages(ForumEntity $forum): ?int
     {
         $permVal = (int)$this->hasNodePermission($forum->node_id, 'sv_MaxImageCount');
 
@@ -28,7 +28,7 @@ class User extends XFCP_User
         return $permVal;
     }
 
-    public function getForumMessageMinImages(Forum $forum, Post $post): ?int
+    public function getForumMessageMinImages(ForumEntity $forum, PostEntity $post): ?int
     {
         $isFirstPost = $post->isFirstPost();
 

@@ -5,7 +5,7 @@
 
 namespace SV\ImageCount\XF\Service\Conversation;
 
-use SV\ImageCount\XF\Entity\User;
+use SV\ImageCount\XF\Entity\User as ExtendedUserEntity;
 
 class MessageManager extends XFCP_MessageManager
 {
@@ -13,7 +13,7 @@ class MessageManager extends XFCP_MessageManager
     {
         $messagePreparer = parent::getMessagePreparer($format);
 
-        /** @var User $user */
+        /** @var ExtendedUserEntity $user */
         $user = \XF::visitor();
         $maxValue = $user->getConversationMessageMaxImages();
         if ($maxValue !== null)

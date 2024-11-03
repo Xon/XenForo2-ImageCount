@@ -2,7 +2,9 @@
 
 namespace SV\ImageCount\XF\Service\Message;
 
-use SV\ImageCount\BbCode\ProcessorAction\AnalyzeQuotedImgUsage;
+use Closure;
+use SV\ImageCount\BbCode\ProcessorAction\AnalyzeQuotedImgUsage as AnalyzeQuotedImgUsageAction;
+use XF\BbCode\ProcessorAction\AnalyzeUsage as AnalyzeUsageAction;
 use function max;
 
 /**
@@ -30,20 +32,20 @@ class Preparer extends XFCP_Preparer
     public function checkValidity($message)
     {
         $undoPatchCount = null;
-        /** @var ?AnalyzeQuotedImgUsage $quotedUsage */
-        $quotedUsage = $this->bbCodeProcessor->getAnalyzer(AnalyzeQuotedImgUsage::class);
+        /** @var ?AnalyzeQuotedImgUsageAction $quotedUsage */
+        $quotedUsage = $this->bbCodeProcessor->getAnalyzer(AnalyzeQuotedImgUsageAction::class);
         if ($quotedUsage !== null && $quotedUsage->imagesInQuotes !== 0)
         {
-            /** @var ?\XF\BbCode\ProcessorAction\AnalyzeUsage $usage */
+            /** @var ?AnalyzeUsageAction $usage */
             $usage = $this->bbCodeProcessor->getAnalyzer('usage');
             if ($usage !== null)
             {
                 $originalImageCount = 0;
-                $patchImgCount = \Closure::bind(function () use ($quotedUsage, & $originalImageCount) {
+                $patchImgCount = Closure::bind(function () use ($quotedUsage, & $originalImageCount) {
                     $originalImageCount = $this->tagCount['img'] ?? 0;
                     $this->tagCount['img'] = max(0, $originalImageCount - $quotedUsage->imagesInQuotes);
                 }, $usage, $usage);
-                $undoPatchCount = \Closure::bind(function () use ($quotedUsage, $originalImageCount) {
+                $undoPatchCount = Closure::bind(function () use ($quotedUsage, $originalImageCount) {
                     $this->tagCount['img'] = $originalImageCount;
                 }, $usage, $usage);
 
@@ -79,7 +81,7 @@ class Preparer extends XFCP_Preparer
         if ($this->filters['svExtractQuotedImgStats'])
         {
             $bbCodeContainer = $this->app->bbCode();
-            $processor->addProcessorAction(AnalyzeQuotedImgUsage::class, $bbCodeContainer->processorAction(AnalyzeQuotedImgUsage::class));
+            $processor->addProcessorAction(AnalyzeQuotedImgUsageAction::class, $bbCodeContainer->processorAction(AnalyzeQuotedImgUsageAction::class));
         }
 
         return $processor;
@@ -115,7 +117,7 @@ class Preparer extends XFCP_Preparer
     public function checkMinImages(): ?\XF\Phrase
     {
         $error = null;
-        /** @var \XF\BbCode\ProcessorAction\AnalyzeUsage $usage */
+        /** @var AnalyzeUsageAction $usage */
         $usage = $this->bbCodeProcessor->getAnalyzer('usage');
 
         $minImages = (int)($this->constraints['minImages'] ?? 0);
@@ -127,8 +129,8 @@ class Preparer extends XFCP_Preparer
                 $imageCount += (int)$usage->getTagCount($tag);
             }
 
-            /** @var AnalyzeQuotedImgUsage $quotedUsage */
-            $quotedUsage = $this->bbCodeProcessor->getAnalyzer(AnalyzeQuotedImgUsage::class);
+            /** @var AnalyzeQuotedImgUsageAction|null $quotedUsage */
+            $quotedUsage = $this->bbCodeProcessor->getAnalyzer(AnalyzeQuotedImgUsageAction::class);
             if ($quotedUsage !== null)
             {
                 if ($this->svAttachCount > 0)

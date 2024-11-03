@@ -5,11 +5,12 @@
 
 namespace SV\ImageCount\XF\Service\Post;
 
-use SV\ImageCount\XF\Entity\User;
+use SV\ImageCount\XF\Entity\User as ExtendedUserEntity;
+use SV\ImageCount\XF\Service\Message\Preparer as ExtendedPreparerService;
 
 class Preparer extends XFCP_Preparer
 {
-    /** @var \SV\ImageCount\XF\Service\Message\Preparer|null  */
+    /** @var ExtendedPreparerService|null  */
     public $svMessagePreparer = null;
 
     public function getAttachmentHash(): ?string
@@ -19,14 +20,14 @@ class Preparer extends XFCP_Preparer
 
     protected function getMessagePreparer($format = true)
     {
-        /** @var \SV\ImageCount\XF\Service\Message\Preparer $messagePreparer */
+        /** @var ExtendedPreparerService $messagePreparer */
         $messagePreparer = parent::getMessagePreparer($format);
 
         $post = $this->getPost();
         $forum = $post->Thread->Forum ?? null;
         if ($forum !== null)
         {
-            /** @var User $user */
+            /** @var ExtendedUserEntity $user */
             $user = $post->User ?? \XF::visitor();
             $maxValue = $user->getForumMessageMaxImages($forum);
             if ($maxValue !== null)
